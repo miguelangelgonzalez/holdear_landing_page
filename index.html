@@ -1,0 +1,2313 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Holdear - Tu portafolio argentino, finalmente en un solo lugar</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            /* Backgrounds */
+            --bg-primary: #0d0d0d;
+            --bg-surface: #141414;
+            --bg-surface-light: #1a1a1a;
+            --border: #242424;
+            --border-light: #2d2d2d;
+            --muted: #3d3d3d;
+            
+            /* Text */
+            --text-primary: #fafafa;
+            --text-secondary: #a1a1a1;
+            --text-muted: #6b6b6b;
+            
+            /* Accents */
+            --primary: #c8f542;
+            --primary-glow: rgba(200, 245, 66, 0.2);
+            --primary-dark: #a5cc35;
+            --green: #4ade80;
+            --red: #f87171;
+            --blue: #60a5fa;
+            --purple: #a78bfa;
+            --orange: #fb923c;
+            --yellow: #facc15;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        .display {
+            font-family: 'Space Grotesk', sans-serif;
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Animated background */
+        .bg-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image: 
+                radial-gradient(ellipse 60% 40% at 50% -10%, var(--primary-glow), transparent),
+                radial-gradient(circle at 10% 90%, rgba(200, 245, 66, 0.03), transparent 40%),
+                radial-gradient(circle at 90% 10%, rgba(200, 245, 66, 0.03), transparent 40%);
+        }
+
+        .grid-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            background-image: 
+                linear-gradient(rgba(36, 36, 36, 0.5) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(36, 36, 36, 0.5) 1px, transparent 1px);
+            background-size: 80px 80px;
+            mask-image: linear-gradient(180deg, black, transparent 60%);
+            opacity: 0.4;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 100;
+            padding: 1rem 2rem;
+            backdrop-filter: blur(20px);
+            background: rgba(13, 13, 13, 0.85);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 0.625rem;
+        }
+
+        .logo-icon {
+            width: 36px;
+            height: 36px;
+            background: var(--primary);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: var(--bg-primary);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-cta {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            border: none;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--text-secondary);
+        }
+
+        .btn-ghost:hover {
+            color: var(--text-primary);
+        }
+
+        .btn-primary {
+            background: var(--primary);
+            color: var(--bg-primary);
+            box-shadow: 0 4px 24px var(--primary-glow);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 32px var(--primary-glow);
+            background: var(--primary-dark);
+        }
+
+        .btn-secondary {
+            background: var(--bg-surface-light);
+            color: var(--text-primary);
+            border: 1px solid var(--border);
+        }
+
+        .btn-secondary:hover {
+            border-color: var(--border-light);
+            background: var(--muted);
+        }
+
+        .btn-large {
+            padding: 1rem 2rem;
+            font-size: 1rem;
+        }
+
+        /* Sections */
+        section {
+            position: relative;
+            z-index: 1;
+            padding: 7rem 2rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding-top: 6rem;
+        }
+
+        .hero-content {
+            text-align: center;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem 1.25rem;
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 100px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .hero-badge .dot {
+            width: 8px;
+            height: 8px;
+            background: var(--green);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2.75rem, 7vw, 4.5rem);
+            font-weight: 700;
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            animation: fadeInUp 0.8s ease 0.1s forwards;
+            opacity: 0;
+        }
+
+        .hero h1 .highlight {
+            color: var(--primary);
+        }
+
+        .hero-description {
+            font-size: 1.2rem;
+            color: var(--text-secondary);
+            max-width: 680px;
+            margin: 0 auto 2.5rem;
+            animation: fadeInUp 0.8s ease 0.2s forwards;
+            opacity: 0;
+            line-height: 1.7;
+        }
+
+        .hero-cta {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            animation: fadeInUp 0.8s ease 0.3s forwards;
+            opacity: 0;
+        }
+
+        .hero-visual {
+            margin-top: 4rem;
+            position: relative;
+            animation: fadeInUp 0.8s ease 0.4s forwards;
+            opacity: 0;
+        }
+
+        .dashboard-preview {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 1rem;
+            box-shadow: 
+                0 0 0 1px var(--border),
+                0 24px 64px -16px rgba(0, 0, 0, 0.6),
+                0 0 120px var(--primary-glow);
+        }
+
+        .dashboard-header {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+            padding: 0.25rem;
+        }
+
+        .dashboard-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: var(--muted);
+        }
+
+        .dashboard-dot:first-child { background: #ff5f57; }
+        .dashboard-dot:nth-child(2) { background: #ffbd2e; }
+        .dashboard-dot:nth-child(3) { background: #28c840; }
+
+        .dashboard-content {
+            background: var(--bg-primary);
+            border-radius: 10px;
+            display: grid;
+            grid-template-columns: 220px 1fr;
+            min-height: 420px;
+            overflow: hidden;
+        }
+
+        .dashboard-sidebar {
+            background: var(--bg-surface);
+            padding: 1.5rem 1rem;
+            border-right: 1px solid var(--border);
+        }
+
+        .sidebar-logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-weight: 700;
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            padding: 0 0.5rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .sidebar-logo-icon {
+            width: 24px;
+            height: 24px;
+            background: var(--primary);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            color: var(--bg-primary);
+        }
+
+        .sidebar-item {
+            padding: 0.7rem 0.75rem;
+            border-radius: 8px;
+            margin-bottom: 0.35rem;
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .sidebar-item.active {
+            background: var(--bg-surface-light);
+            color: var(--text-primary);
+        }
+
+        .sidebar-item .icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 4px;
+            background: var(--muted);
+        }
+
+        .sidebar-item.active .icon {
+            background: var(--primary);
+        }
+
+        .dashboard-main {
+            padding: 1.25rem;
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .dashboard-top-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 1rem;
+        }
+
+        .stat-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .stat-label {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            margin-bottom: 0.4rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 1.25rem;
+            font-weight: 600;
+        }
+
+        .stat-value.green { color: var(--green); }
+        .stat-value.red { color: var(--red); }
+
+        .stat-change {
+            font-size: 0.75rem;
+            margin-top: 0.25rem;
+        }
+
+        .stat-change.positive { color: var(--green); }
+        .stat-change.negative { color: var(--red); }
+
+        .dashboard-portfolio {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 1fr 280px;
+            gap: 1rem;
+        }
+
+        .holdings-list {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .holdings-header {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            padding: 0.75rem 1rem;
+            font-size: 0.7rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .holding-row {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr 1fr;
+            padding: 0.75rem 1rem;
+            font-size: 0.85rem;
+            border-bottom: 1px solid var(--border);
+            align-items: center;
+        }
+
+        .holding-row:last-child {
+            border-bottom: none;
+        }
+
+        .holding-name {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .holding-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--bg-primary);
+        }
+
+        .holding-icon.cedear { background: var(--purple); }
+        .holding-icon.bond { background: var(--orange); }
+        .holding-icon.stock { background: var(--blue); }
+        .holding-icon.crypto { background: var(--yellow); }
+
+        .holding-ticker {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        .holding-type {
+            font-size: 0.7rem;
+            color: var(--text-muted);
+        }
+
+        .holding-value {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .allocation-chart {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 1rem;
+        }
+
+        .allocation-title {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 1rem;
+        }
+
+        .allocation-ring {
+            width: 140px;
+            height: 140px;
+            margin: 0 auto 1rem;
+            border-radius: 50%;
+            background: conic-gradient(
+                var(--purple) 0deg 115deg,
+                var(--blue) 115deg 200deg,
+                var(--orange) 200deg 270deg,
+                var(--yellow) 270deg 320deg,
+                var(--green) 320deg 360deg
+            );
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .allocation-ring-inner {
+            width: 90px;
+            height: 90px;
+            background: var(--bg-surface);
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .allocation-total-label {
+            font-size: 0.6rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .allocation-total {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .allocation-legend {
+            display: flex;
+            flex-direction: column;
+            gap: 0.5rem;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-size: 0.8rem;
+        }
+
+        .legend-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: var(--text-secondary);
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 3px;
+        }
+
+        .legend-value {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--text-primary);
+        }
+
+        /* Problem Section */
+        .problem {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-label {
+            display: inline-block;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--primary);
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            margin-bottom: 1rem;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .section-title {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            font-size: 1.1rem;
+            color: var(--text-secondary);
+            max-width: 650px;
+            margin: 0 auto;
+            line-height: 1.7;
+        }
+
+        .problem-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .problem-text h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .problem-text p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .problem-list {
+            list-style: none;
+        }
+
+        .problem-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+            margin-bottom: 1rem;
+            color: var(--text-secondary);
+        }
+
+        .problem-list .icon {
+            width: 24px;
+            height: 24px;
+            background: rgba(248, 113, 113, 0.15);
+            border-radius: 6px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--red);
+            font-size: 0.85rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .chaos-visual {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .chaos-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.25rem;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .chaos-card:hover {
+            transform: translateY(-4px);
+            border-color: var(--border-light);
+        }
+
+        .chaos-icon {
+            font-size: 2rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .chaos-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Solution Section */
+        .solution-content {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 4rem;
+            align-items: center;
+        }
+
+        .solution-text h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .solution-text p {
+            color: var(--text-secondary);
+            font-size: 1.05rem;
+            line-height: 1.8;
+            margin-bottom: 2rem;
+        }
+
+        .solution-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .solution-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.75rem;
+        }
+
+        .solution-feature .icon {
+            width: 20px;
+            height: 20px;
+            background: var(--primary);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--bg-primary);
+            font-size: 0.7rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .solution-feature span {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+        }
+
+        .solution-visual {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+        }
+
+        .unified-preview {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .unified-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem;
+            background: var(--bg-primary);
+            border-radius: 10px;
+            border: 1px solid var(--border);
+        }
+
+        .unified-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 0.8rem;
+            color: var(--bg-primary);
+        }
+
+        .unified-info {
+            flex: 1;
+        }
+
+        .unified-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .unified-type {
+            font-size: 0.75rem;
+            color: var(--text-muted);
+        }
+
+        .unified-value {
+            text-align: right;
+        }
+
+        .unified-amount {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .unified-change {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 0.75rem;
+        }
+
+        /* Features Section */
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+        }
+
+        .feature-card {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 2rem;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .feature-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100px;
+            background: linear-gradient(180deg, rgba(200, 245, 66, 0.05) 0%, transparent 100%);
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .feature-card:hover {
+            border-color: var(--border-light);
+            transform: translateY(-4px);
+        }
+
+        .feature-card:hover::before {
+            opacity: 1;
+        }
+
+        .feature-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .feature-icon.purple { background: rgba(167, 139, 250, 0.15); }
+        .feature-icon.blue { background: rgba(96, 165, 250, 0.15); }
+        .feature-icon.orange { background: rgba(251, 146, 60, 0.15); }
+        .feature-icon.yellow { background: rgba(250, 204, 21, 0.15); }
+        .feature-icon.green { background: rgba(74, 222, 128, 0.15); }
+        .feature-icon.primary { background: rgba(200, 245, 66, 0.15); }
+
+        .feature-card h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.75rem;
+        }
+
+        .feature-card p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        /* Pricing Section */
+        .pricing {
+            background: var(--bg-surface);
+            border-top: 1px solid var(--border);
+            border-bottom: 1px solid var(--border);
+        }
+
+        .pricing-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1.5rem;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .pricing-grid-2 {
+            grid-template-columns: repeat(2, 1fr);
+            max-width: 700px;
+        }
+
+        .pricing-card {
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 2.5rem;
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .pricing-card:hover {
+            transform: translateY(-4px);
+        }
+
+        .pricing-card.featured {
+            border-color: var(--primary);
+            box-shadow: 0 0 60px var(--primary-glow);
+        }
+
+        .pricing-card.featured::before {
+            content: 'Más Popular';
+            position: absolute;
+            top: -12px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: var(--primary);
+            padding: 0.4rem 1.25rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            color: var(--bg-primary);
+        }
+
+        .pricing-name {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .pricing-description {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .pricing-price {
+            display: flex;
+            align-items: baseline;
+            gap: 0.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-currency {
+            font-size: 1.25rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+        }
+
+        .pricing-amount {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 3.5rem;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        .pricing-period {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .pricing-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .pricing-features li {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+
+        .pricing-features li:last-child {
+            border-bottom: none;
+        }
+
+        .pricing-features .check {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .pricing-card .btn {
+            width: 100%;
+            text-align: center;
+        }
+
+        /* FAQ Section */
+        .faq-grid {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .faq-item {
+            border-bottom: 1px solid var(--border);
+        }
+
+        .faq-question {
+            width: 100%;
+            background: none;
+            border: none;
+            padding: 1.5rem 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+            text-align: left;
+        }
+
+        .faq-question h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        .faq-icon {
+            width: 28px;
+            height: 28px;
+            border-radius: 8px;
+            background: var(--bg-surface-light);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+        }
+
+        .faq-item.open .faq-icon {
+            background: var(--primary);
+            color: var(--bg-primary);
+            transform: rotate(45deg);
+        }
+
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .faq-item.open .faq-answer {
+            max-height: 250px;
+            padding-bottom: 1.5rem;
+        }
+
+        .faq-answer p {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.7;
+        }
+
+        /* CTA Section */
+        .cta {
+            text-align: center;
+        }
+
+        .cta-box {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 24px;
+            padding: 5rem 4rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-box::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100%;
+            height: 200px;
+            background: radial-gradient(ellipse at center, var(--primary-glow), transparent 70%);
+            pointer-events: none;
+        }
+
+        .cta h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(2rem, 4vw, 2.75rem);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .cta p {
+            color: var(--text-secondary);
+            font-size: 1.15rem;
+            margin-bottom: 2.5rem;
+            position: relative;
+            max-width: 500px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            position: relative;
+        }
+
+        /* Footer */
+        footer {
+            position: relative;
+            z-index: 1;
+            padding: 4rem 2rem 2rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: 2fr repeat(3, 1fr);
+            gap: 4rem;
+        }
+
+        .footer-brand p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            margin-top: 1rem;
+            max-width: 300px;
+            line-height: 1.6;
+        }
+
+        .footer-column h4 {
+            font-size: 0.8rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.1em;
+            margin-bottom: 1.25rem;
+            color: var(--text-muted);
+        }
+
+        .footer-column ul {
+            list-style: none;
+        }
+
+        .footer-column li {
+            margin-bottom: 0.75rem;
+        }
+
+        .footer-column a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.9rem;
+            transition: color 0.2s;
+        }
+
+        .footer-column a:hover {
+            color: var(--text-primary);
+        }
+
+        .footer-bottom {
+            max-width: 1200px;
+            margin: 3rem auto 0;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 0.75rem;
+        }
+
+        .footer-social a {
+            width: 38px;
+            height: 38px;
+            border-radius: 10px;
+            background: var(--bg-surface-light);
+            border: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: all 0.2s;
+            font-size: 0.9rem;
+        }
+
+        .footer-social a:hover {
+            background: var(--primary);
+            border-color: var(--primary);
+            color: var(--bg-primary);
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s ease;
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Waitlist Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 1.5rem;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal {
+            background: var(--bg-surface);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 3rem;
+            max-width: 480px;
+            width: 100%;
+            position: relative;
+            transform: translateY(20px) scale(0.95);
+            transition: all 0.3s ease;
+        }
+
+        .modal-overlay.active .modal {
+            transform: translateY(0) scale(1);
+        }
+
+        .modal-close {
+            position: absolute;
+            top: 1.25rem;
+            right: 1.25rem;
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            background: var(--bg-surface-light);
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 1.25rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+        }
+
+        .modal-close:hover {
+            background: var(--muted);
+            color: var(--text-primary);
+        }
+
+        .modal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 0.85rem;
+            background: rgba(200, 245, 66, 0.1);
+            border: 1px solid rgba(200, 245, 66, 0.2);
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        .modal-badge .pulse-dot {
+            width: 8px;
+            height: 8px;
+            background: var(--primary);
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        .modal h2 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.75rem;
+            font-weight: 700;
+            margin-bottom: 0.75rem;
+        }
+
+        .modal-description {
+            color: var(--text-secondary);
+            font-size: 1rem;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+        }
+
+        .waitlist-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .input-group {
+            position: relative;
+        }
+
+        .input-group input {
+            width: 100%;
+            padding: 1rem 1.25rem;
+            background: var(--bg-primary);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            color: var(--text-primary);
+            font-size: 1rem;
+            font-family: 'Inter', sans-serif;
+            transition: all 0.2s;
+        }
+
+        .input-group input::placeholder {
+            color: var(--text-muted);
+        }
+
+        .input-group input:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px var(--primary-glow);
+        }
+
+        .waitlist-form .btn-primary {
+            padding: 1rem 1.5rem;
+            font-size: 1rem;
+        }
+
+        .modal-note {
+            display: flex;
+            align-items: flex-start;
+            gap: 0.6rem;
+            margin-top: 1.25rem;
+            padding: 0.875rem 1rem;
+            background: var(--bg-primary);
+            border-radius: 10px;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        .modal-note .icon {
+            font-size: 1rem;
+            flex-shrink: 0;
+        }
+
+        /* Success state */
+        .waitlist-form.success .input-group,
+        .waitlist-form.success .btn-primary {
+            display: none;
+        }
+
+        .success-message {
+            display: none;
+            text-align: center;
+            padding: 1rem 0;
+        }
+
+        .waitlist-form.success .success-message {
+            display: block;
+        }
+
+        .success-icon {
+            width: 64px;
+            height: 64px;
+            background: rgba(74, 222, 128, 0.15);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            margin: 0 auto 1rem;
+        }
+
+        .success-message h3 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: var(--green);
+        }
+
+        .success-message p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .nav-links {
+                display: none;
+            }
+
+            .problem-content,
+            .solution-content {
+                grid-template-columns: 1fr;
+                gap: 3rem;
+            }
+
+            .features-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .pricing-grid,
+            .pricing-grid-2 {
+                grid-template-columns: 1fr;
+                max-width: 400px;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
+            }
+
+            .footer-brand {
+                grid-column: span 2;
+            }
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 5rem 1.5rem;
+            }
+
+            .dashboard-content {
+                grid-template-columns: 1fr;
+            }
+
+            .dashboard-sidebar {
+                display: none;
+            }
+
+            .dashboard-top-row {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .dashboard-portfolio {
+                grid-template-columns: 1fr;
+            }
+
+            .holdings-header,
+            .holding-row {
+                grid-template-columns: 2fr 1fr 1fr;
+            }
+
+            .holdings-header > *:last-child,
+            .holding-row > *:last-child {
+                display: none;
+            }
+
+            .chaos-visual {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .features-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .solution-features {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero h1 {
+                font-size: 2.25rem;
+            }
+
+            .hero-description {
+                font-size: 1rem;
+            }
+
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-brand {
+                grid-column: span 1;
+            }
+
+            .footer-bottom {
+                flex-direction: column;
+                gap: 1rem;
+                text-align: center;
+            }
+
+            .cta-box {
+                padding: 3rem 2rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+            }
+
+            .cta-buttons .btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-pattern"></div>
+    <div class="grid-overlay"></div>
+
+    <!-- Navigation -->
+    <nav>
+        <div class="nav-container">
+            <a href="#" class="logo">
+                <div class="logo-icon">H</div>
+                Holdear
+            </a>
+            <ul class="nav-links">
+                <li><a href="#problema">Problema</a></li>
+                <li><a href="#solucion">Solución</a></li>
+                <li><a href="#funciones">Funciones</a></li>
+                <li><a href="#precios">Precios</a></li>
+                <li><a href="#faq">FAQ</a></li>
+            </ul>
+            <div class="nav-cta">
+                <a href="#" class="btn btn-primary">Unirme a la waitlist</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="container">
+            <div class="hero-content">
+                <h1>
+                    Tu portafolio argentino,<br>
+                    <span class="highlight">finalmente en un solo lugar.</span>
+                </h1>
+                <p class="hero-description">
+                    Centralizá bonos, CEDEARs, acciones y crypto en un solo dashboard. Calculá tu rendimiento real en pesos y dólares, con MEP actualizado automáticamente.
+                </p>
+                <div class="hero-cta">
+                    <a href="#" class="btn btn-primary btn-large">Reservar mi lugar →</a>
+                    <a href="#precios" class="btn btn-secondary btn-large">Ver planes</a>
+                </div>
+            </div>
+            <div class="hero-visual">
+                <div class="dashboard-preview">
+                    <div class="dashboard-header">
+                        <div class="dashboard-dot"></div>
+                        <div class="dashboard-dot"></div>
+                        <div class="dashboard-dot"></div>
+                    </div>
+                    <div class="dashboard-content">
+                        <div class="dashboard-sidebar">
+                            <div class="sidebar-logo">
+                                <div class="sidebar-logo-icon">H</div>
+                                Holdear
+                            </div>
+                            <div class="sidebar-item active">
+                                <div class="icon"></div>
+                                Dashboard
+                            </div>
+                            <div class="sidebar-item">
+                                <div class="icon"></div>
+                                Operaciones
+                            </div>
+                            <div class="sidebar-item">
+                                <div class="icon"></div>
+                                CEDEARs
+                            </div>
+                            <div class="sidebar-item">
+                                <div class="icon"></div>
+                                Bonos
+                            </div>
+                            <div class="sidebar-item">
+                                <div class="icon"></div>
+                                Crypto
+                            </div>
+                            <div class="sidebar-item">
+                                <div class="icon"></div>
+                                Configuración
+                            </div>
+                        </div>
+                        <div class="dashboard-main">
+                            <div class="dashboard-top-row">
+                                <div class="stat-card">
+                                    <div class="stat-label">Patrimonio Total</div>
+                                    <div class="stat-value">$24.850</div>
+                                    <div class="stat-change positive">+12.4% USD</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">En ARS (MEP)</div>
+                                    <div class="stat-value mono">$28.2M</div>
+                                    <div class="stat-change positive">+18.2%</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">P&L Hoy</div>
+                                    <div class="stat-value green">+$342</div>
+                                    <div class="stat-change positive">+1.4%</div>
+                                </div>
+                                <div class="stat-card">
+                                    <div class="stat-label">Dólar MEP</div>
+                                    <div class="stat-value mono">$1.134</div>
+                                    <div class="stat-change negative">-0.3%</div>
+                                </div>
+                            </div>
+                            <div class="dashboard-portfolio">
+                                <div class="holdings-list">
+                                    <div class="holdings-header">
+                                        <span>Activo</span>
+                                        <span>Precio</span>
+                                        <span>Tenencia</span>
+                                        <span>P&L</span>
+                                    </div>
+                                    <div class="holding-row">
+                                        <div class="holding-name">
+                                            <div class="holding-icon cedear">CE</div>
+                                            <div>
+                                                <div class="holding-ticker">MELI</div>
+                                                <div class="holding-type">CEDEAR</div>
+                                            </div>
+                                        </div>
+                                        <div class="holding-value">$1,842</div>
+                                        <div class="holding-value">$8,420</div>
+                                        <div class="holding-value" style="color: var(--green);">+18.2%</div>
+                                    </div>
+                                    <div class="holding-row">
+                                        <div class="holding-name">
+                                            <div class="holding-icon bond">BO</div>
+                                            <div>
+                                                <div class="holding-ticker">AL30D</div>
+                                                <div class="holding-type">Bono</div>
+                                            </div>
+                                        </div>
+                                        <div class="holding-value">$56.20</div>
+                                        <div class="holding-value">$5,620</div>
+                                        <div class="holding-value" style="color: var(--green);">+8.4%</div>
+                                    </div>
+                                    <div class="holding-row">
+                                        <div class="holding-name">
+                                            <div class="holding-icon stock">US</div>
+                                            <div>
+                                                <div class="holding-ticker">AAPL</div>
+                                                <div class="holding-type">US Stock</div>
+                                            </div>
+                                        </div>
+                                        <div class="holding-value">$198</div>
+                                        <div class="holding-value">$4,950</div>
+                                        <div class="holding-value" style="color: var(--green);">+5.1%</div>
+                                    </div>
+                                    <div class="holding-row">
+                                        <div class="holding-name">
+                                            <div class="holding-icon crypto">₿</div>
+                                            <div>
+                                                <div class="holding-ticker">BTC</div>
+                                                <div class="holding-type">Crypto</div>
+                                            </div>
+                                        </div>
+                                        <div class="holding-value">$43,250</div>
+                                        <div class="holding-value">$3,460</div>
+                                        <div class="holding-value" style="color: var(--red);">-2.3%</div>
+                                    </div>
+                                </div>
+                                <div class="allocation-chart">
+                                    <div class="allocation-title">Distribución</div>
+                                    <div class="allocation-ring">
+                                        <div class="allocation-ring-inner">
+                                            <span class="allocation-total-label">Total USD</span>
+                                            <span class="allocation-total">$24.8K</span>
+                                        </div>
+                                    </div>
+                                    <div class="allocation-legend">
+                                        <div class="legend-item">
+                                            <span class="legend-label">
+                                                <span class="legend-dot" style="background: var(--purple);"></span>
+                                                CEDEARs
+                                            </span>
+                                            <span class="legend-value">34%</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-label">
+                                                <span class="legend-dot" style="background: var(--blue);"></span>
+                                                US Stocks
+                                            </span>
+                                            <span class="legend-value">24%</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-label">
+                                                <span class="legend-dot" style="background: var(--orange);"></span>
+                                                Bonos AR
+                                            </span>
+                                            <span class="legend-value">20%</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-label">
+                                                <span class="legend-dot" style="background: var(--yellow);"></span>
+                                                Crypto
+                                            </span>
+                                            <span class="legend-value">14%</span>
+                                        </div>
+                                        <div class="legend-item">
+                                            <span class="legend-label">
+                                                <span class="legend-dot" style="background: var(--green);"></span>
+                                                Otros
+                                            </span>
+                                            <span class="legend-value">8%</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Problem Section -->
+    <section class="problem" id="problema">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">// El problema</span>
+                <h2 class="section-title">¿Te suena familiar?</h2>
+                <p class="section-subtitle">
+                    Invertir en Argentina es complicado. Trackear tus inversiones no debería serlo también.
+                </p>
+            </div>
+            <div class="problem-content">
+                <div class="problem-text reveal">
+                    <h3>El caos de las planillas de Excel</h3>
+                    <p>
+                        Si invertís en Argentina, sabés lo complicado que es trackear tu portafolio real. Tenés bonos en un broker, CEDEARs en otro, acciones de USA en TradeStation, crypto en Binance...
+                    </p>
+                    <p>
+                        Y terminás con una planilla de Excel que nunca está actualizada. Calcular tu rendimiento real en pesos y dólares se vuelve un dolor de cabeza constante.
+                    </p>
+                    <ul class="problem-list">
+                        <li>
+                            <span class="icon">✕</span>
+                            Datos dispersos en múltiples brokers y exchanges
+                        </li>
+                        <li>
+                            <span class="icon">✕</span>
+                            Cálculos manuales de precio promedio con comisiones
+                        </li>
+                        <li>
+                            <span class="icon">✕</span>
+                            Conversión ARS/USD desactualizada
+                        </li>
+                        <li>
+                            <span class="icon">✕</span>
+                            Sin visión real de tu rendimiento total
+                        </li>
+                    </ul>
+                </div>
+                <div class="chaos-visual reveal">
+                    <div class="chaos-card">
+                        <div class="chaos-icon">📊</div>
+                        <div class="chaos-label">Broker #1</div>
+                    </div>
+                    <div class="chaos-card">
+                        <div class="chaos-icon">📈</div>
+                        <div class="chaos-label">Broker #2</div>
+                    </div>
+                    <div class="chaos-card">
+                        <div class="chaos-icon">💹</div>
+                        <div class="chaos-label">TradeStation</div>
+                    </div>
+                    <div class="chaos-card">
+                        <div class="chaos-icon">₿</div>
+                        <div class="chaos-label">Binance</div>
+                    </div>
+                    <div class="chaos-card">
+                        <div class="chaos-icon">📑</div>
+                        <div class="chaos-label">Excel</div>
+                    </div>
+                    <div class="chaos-card">
+                        <div class="chaos-icon">🤯</div>
+                        <div class="chaos-label">Tu cabeza</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Solution Section -->
+    <section class="solution" id="solucion">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">// La solución</span>
+                <h2 class="section-title">Todo en un solo lugar</h2>
+                <p class="section-subtitle">
+                    Holdear centraliza todas tus inversiones argentinas en una sola plataforma.
+                </p>
+            </div>
+            <div class="solution-content">
+                <div class="solution-visual reveal">
+                    <div class="unified-preview">
+                        <div class="unified-row">
+                            <div class="unified-icon" style="background: var(--purple);">CE</div>
+                            <div class="unified-info">
+                                <div class="unified-name">CEDEARs</div>
+                                <div class="unified-type">MELI, AAPL, GOOGL, NVDA...</div>
+                            </div>
+                            <div class="unified-value">
+                                <div class="unified-amount">$12,840</div>
+                                <div class="unified-change" style="color: var(--green);">+14.2%</div>
+                            </div>
+                        </div>
+                        <div class="unified-row">
+                            <div class="unified-icon" style="background: var(--orange);">BO</div>
+                            <div class="unified-info">
+                                <div class="unified-name">Bonos Argentinos</div>
+                                <div class="unified-type">AL30D, GD30D, AE38...</div>
+                            </div>
+                            <div class="unified-value">
+                                <div class="unified-amount">$5,620</div>
+                                <div class="unified-change" style="color: var(--green);">+8.4%</div>
+                            </div>
+                        </div>
+                        <div class="unified-row">
+                            <div class="unified-icon" style="background: var(--blue);">US</div>
+                            <div class="unified-info">
+                                <div class="unified-name">US Stocks</div>
+                                <div class="unified-type">TSLA, AMZN, META...</div>
+                            </div>
+                            <div class="unified-value">
+                                <div class="unified-amount">$4,950</div>
+                                <div class="unified-change" style="color: var(--green);">+5.1%</div>
+                            </div>
+                        </div>
+                        <div class="unified-row">
+                            <div class="unified-icon" style="background: var(--yellow);">₿</div>
+                            <div class="unified-info">
+                                <div class="unified-name">Crypto</div>
+                                <div class="unified-type">BTC, ETH, SOL...</div>
+                            </div>
+                            <div class="unified-value">
+                                <div class="unified-amount">$3,460</div>
+                                <div class="unified-change" style="color: var(--red);">-2.3%</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="solution-text reveal">
+                    <h3>Claridad sobre tu patrimonio</h3>
+                    <p>
+                        Registrá tus operaciones de bonos argentinos, CEDEARs, acciones locales, US stocks y criptomonedas. La app calcula automáticamente tu precio promedio de compra (incluyendo comisiones), actualiza precios de mercado, y te muestra tu PNL real en ARS y USD con el tipo de cambio MEP actualizado.
+                    </p>
+                    <p>
+                        <strong>Sin más planillas. Sin más cálculos manuales.</strong>
+                    </p>
+                    <div class="solution-features">
+                        <div class="solution-feature">
+                            <span class="icon">✓</span>
+                            <span>Precio promedio automático</span>
+                        </div>
+                        <div class="solution-feature">
+                            <span class="icon">✓</span>
+                            <span>Comisiones incluidas</span>
+                        </div>
+                        <div class="solution-feature">
+                            <span class="icon">✓</span>
+                            <span>MEP actualizado</span>
+                        </div>
+                        <div class="solution-feature">
+                            <span class="icon">✓</span>
+                            <span>P&L en ARS y USD</span>
+                        </div>
+                        <div class="solution-feature">
+                            <span class="icon">✓</span>
+                            <span>Precios en tiempo real</span>
+                        </div>
+                        <div class="solution-feature">
+                            <span class="icon">✓</span>
+                            <span>Historial completo</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section class="features" id="funciones">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">// Funciones</span>
+                <h2 class="section-title">Todo lo que necesitás</h2>
+                <p class="section-subtitle">
+                    Diseñado específicamente para inversores argentinos.
+                </p>
+            </div>
+            <div class="features-grid">
+                <div class="feature-card reveal">
+                    <div class="feature-icon purple">📊</div>
+                    <h3>CEDEARs</h3>
+                    <p>Trackeá tus CEDEARs con el ratio de conversión correcto. Compará con el subyacente en tiempo real.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon orange">📈</div>
+                    <h3>Bonos Argentinos</h3>
+                    <p>Soberanos, provinciales y corporativos. En pesos y en dólares. Con cálculo de TIR y duration.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon blue">🇺🇸</div>
+                    <h3>US Stocks</h3>
+                    <p>Tus acciones de USA integradas. Perfectas para quienes operan en TradeStation o Interactive Brokers.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon yellow">₿</div>
+                    <h3>Crypto</h3>
+                    <p>Bitcoin, Ethereum y todas tus crypto. Sincronizá operaciones de Binance, Lemon y más.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon green">💱</div>
+                    <h3>Dólar MEP Automático</h3>
+                    <p>El tipo de cambio se actualiza automáticamente. Siempre sabés cuánto vale tu portafolio en ambas monedas.</p>
+                </div>
+                <div class="feature-card reveal">
+                    <div class="feature-icon primary">📱</div>
+                    <h3>Acceso desde cualquier lugar</h3>
+                    <p>Web app responsive. Consultá tu portafolio desde tu celular, tablet o computadora.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Pricing Section -->
+    <section class="pricing" id="precios">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">// Precios</span>
+                <h2 class="section-title">Simple y transparente</h2>
+                <p class="section-subtitle">
+                    Dos planes simples. Elegí el que mejor se adapte a vos.
+                </p>
+            </div>
+            <div class="pricing-grid pricing-grid-2">
+                <div class="pricing-card reveal">
+                    <div class="pricing-name">Esencial</div>
+                    <div class="pricing-description">Para inversores que empiezan</div>
+                    <div class="pricing-price">
+                        <span class="pricing-currency">USD</span>
+                        <span class="pricing-amount">8</span>
+                        <span class="pricing-period">/mes</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><span class="check">✓</span> Hasta 20 activos</li>
+                        <li><span class="check">✓</span> Dashboard completo</li>
+                        <li><span class="check">✓</span> MEP actualizado</li>
+                        <li><span class="check">✓</span> P&L en ARS y USD</li>
+                        <li><span class="check">✓</span> Historial de operaciones</li>
+                    </ul>
+                    <a href="#" class="btn btn-secondary">Unirme a la waitlist</a>
+                </div>
+                <div class="pricing-card featured reveal">
+                    <div class="pricing-name">Pro</div>
+                    <div class="pricing-description">Para inversores activos</div>
+                    <div class="pricing-price">
+                        <span class="pricing-currency">USD</span>
+                        <span class="pricing-amount">12</span>
+                        <span class="pricing-period">/mes</span>
+                    </div>
+                    <ul class="pricing-features">
+                        <li><span class="check">✓</span> Activos ilimitados</li>
+                        <li><span class="check">✓</span> Dashboard avanzado</li>
+                        <li><span class="check">✓</span> Historial completo</li>
+                        <li><span class="check">✓</span> Exportar a Excel</li>
+                        <li><span class="check">✓</span> Alertas de precio</li>
+                        <li><span class="check">✓</span> Soporte prioritario</li>
+                    </ul>
+                    <a href="#" class="btn btn-primary">Unirme a la waitlist</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="faq" id="faq">
+        <div class="container">
+            <div class="section-header reveal">
+                <span class="section-label">// FAQ</span>
+                <h2 class="section-title">Preguntas frecuentes</h2>
+            </div>
+            <div class="faq-grid">
+                <div class="faq-item reveal">
+                    <button class="faq-question">
+                        <h3>¿Cómo funciona el registro de operaciones?</h3>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Registrás manualmente cada compra o venta indicando el activo, cantidad, precio y comisiones. La app calcula automáticamente tu precio promedio y actualiza tu posición.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <button class="faq-question">
+                        <h3>¿Puedo importar mis operaciones desde Excel?</h3>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sí, en el plan Pro podés importar operaciones masivamente desde un archivo Excel o CSV. Te damos una plantilla para que sea más fácil.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <button class="faq-question">
+                        <h3>¿Se conecta con mi broker automáticamente?</h3>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Por ahora el registro es manual. Estamos trabajando en integraciones con los principales brokers argentinos para sincronización automática.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <button class="faq-question">
+                        <h3>¿Cada cuánto se actualiza el dólar MEP?</h3>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>El tipo de cambio MEP se actualiza cada 5 minutos durante el horario de mercado, usando las cotizaciones de AL30D y GD30D.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <button class="faq-question">
+                        <h3>¿Mis datos están seguros?</h3>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Absolutamente. Usamos encriptación de nivel bancario (AES-256). No tenemos acceso a tus cuentas de broker. Solo guardamos la información de tus operaciones que vos cargás.</p>
+                    </div>
+                </div>
+                <div class="faq-item reveal">
+                    <button class="faq-question">
+                        <h3>¿Puedo cancelar cuando quiera?</h3>
+                        <span class="faq-icon">+</span>
+                    </button>
+                    <div class="faq-answer">
+                        <p>Sí, podés cancelar tu suscripción en cualquier momento desde tu cuenta. Mantenés el acceso hasta el final del período facturado.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CTA Section -->
+    <section class="cta">
+        <div class="container">
+            <div class="cta-box reveal">
+                <h2>Dejá de hacer malabares con tus inversiones</h2>
+                <p>Sé de los primeros en acceder cuando lancemos. Reservá tu lugar ahora.</p>
+                <div class="cta-buttons">
+                    <a href="#" class="btn btn-primary btn-large">Reservar mi lugar →</a>
+                    <a href="#precios" class="btn btn-secondary btn-large">Ver planes</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Waitlist Modal -->
+    <div class="modal-overlay" id="waitlistModal">
+        <div class="modal">
+            <button class="modal-close" id="modalClose">×</button>
+            <div class="modal-badge">
+                <span class="pulse-dot"></span>
+                En desarrollo
+            </div>
+            <h2>Estamos construyendo algo increíble</h2>
+            <p class="modal-description">
+                Holdear está en desarrollo activo. Dejanos tu email y te avisamos apenas esté listo para que seas de los primeros en acceder.
+            </p>
+            <form class="waitlist-form" id="waitlistForm">
+                <div class="input-group">
+                    <input type="email" placeholder="tu@email.com" required id="emailInput">
+                </div>
+                <button type="submit" class="btn btn-primary">Unirme a la lista de espera →</button>
+                <div class="success-message">
+                    <div class="success-icon">✓</div>
+                    <h3>¡Estás en la lista!</h3>
+                    <p>Te avisaremos apenas Holdear esté listo para vos.</p>
+                </div>
+            </form>
+            <div class="modal-note">
+                <span class="icon">🔒</span>
+                <span>No spam. Solo te contactaremos cuando lancemos. Podés darte de baja cuando quieras.</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-brand">
+                <a href="#" class="logo">
+                    <div class="logo-icon">H</div>
+                    Holdear
+                </a>
+                <p>La plataforma para centralizar tu portafolio argentino. Bonos, CEDEARs, acciones y crypto en un solo lugar.</p>
+            </div>
+            <div class="footer-column">
+                <h4>Producto</h4>
+                <ul>
+                    <li><a href="#">Funciones</a></li>
+                    <li><a href="#">Precios</a></li>
+                    <li><a href="#">Changelog</a></li>
+                    <li><a href="#">Roadmap</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Recursos</h4>
+                <ul>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Guías</a></li>
+                    <li><a href="#">API Docs</a></li>
+                    <li><a href="#">Status</a></li>
+                </ul>
+            </div>
+            <div class="footer-column">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacidad</a></li>
+                    <li><a href="#">Términos</a></li>
+                    <li><a href="#">Seguridad</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>© 2026 Holdear. Todos los derechos reservados.</p>
+            <div class="footer-social">
+                <a href="#">𝕏</a>
+                <a href="#">in</a>
+                <a href="#">▶</a>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Reveal on scroll animation
+        const revealElements = document.querySelectorAll('.reveal');
+        
+        const revealOnScroll = () => {
+            revealElements.forEach(element => {
+                const elementTop = element.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+                
+                if (elementTop < windowHeight - 100) {
+                    element.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        window.addEventListener('load', revealOnScroll);
+
+        // FAQ accordion
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            const question = item.querySelector('.faq-question');
+            
+            question.addEventListener('click', () => {
+                const isOpen = item.classList.contains('open');
+                
+                // Close all items
+                faqItems.forEach(i => i.classList.remove('open'));
+                
+                // Open clicked item if it wasn't open
+                if (!isOpen) {
+                    item.classList.add('open');
+                }
+            });
+        });
+
+        // Smooth scroll for navigation (only for hash links that exist)
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                const href = this.getAttribute('href');
+                if (href === '#') return; // Skip empty hash links
+                const target = document.querySelector(href);
+                if (target) {
+                    e.preventDefault();
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Waitlist Modal
+        const modal = document.getElementById('waitlistModal');
+        const modalClose = document.getElementById('modalClose');
+        const waitlistForm = document.getElementById('waitlistForm');
+        const emailInput = document.getElementById('emailInput');
+
+        // Open modal function
+        const openModal = (e) => {
+            e.preventDefault();
+            modal.classList.add('active');
+            document.body.style.overflow = 'hidden';
+            setTimeout(() => emailInput.focus(), 300);
+        };
+
+        // Close modal function
+        const closeModal = () => {
+            modal.classList.remove('active');
+            document.body.style.overflow = '';
+        };
+
+        // Attach to all CTA buttons
+        document.querySelectorAll('.btn-primary, .pricing-card .btn-secondary').forEach(btn => {
+            // Skip modal close button
+            if (btn.id === 'modalClose') return;
+            btn.addEventListener('click', openModal);
+        });
+
+        // Close modal events
+        modalClose.addEventListener('click', closeModal);
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) closeModal();
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeModal();
+            }
+        });
+
+        // Form submission
+        waitlistForm.addEventListener('submit', (e) => {
+            e.preventDefault();
+            const email = emailInput.value;
+            
+            // Here you would typically send to your backend/API
+            // For now, we'll just show success state
+            console.log('Email submitted:', email);
+            
+            // Show success state
+            waitlistForm.classList.add('success');
+            
+            // Close modal after 3 seconds
+            setTimeout(() => {
+                closeModal();
+                // Reset form after modal closes
+                setTimeout(() => {
+                    waitlistForm.classList.remove('success');
+                    emailInput.value = '';
+                }, 300);
+            }, 3000);
+        });
+    </script>
+</body>
+</html>
