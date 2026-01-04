@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Holdear - Tu portafolio argentino, finalmente en un solo lugar</title>
+    <title>HoldeAR - Tu portafolio argentino, finalmente en un solo lugar</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -1574,7 +1574,7 @@
         <div class="nav-container">
             <a href="#" class="logo">
                 <div class="logo-icon">H</div>
-                Holdear
+                HoldeAR
             </a>
             <ul class="nav-links">
                 <li><a href="#problema">Problema</a></li>
@@ -1616,7 +1616,7 @@
                         <div class="dashboard-sidebar">
                             <div class="sidebar-logo">
                                 <div class="sidebar-logo-icon">H</div>
-                                Holdear
+                                HoldeAR
                             </div>
                             <div class="sidebar-item active">
                                 <div class="icon"></div>
@@ -1852,7 +1852,7 @@
                 <span class="section-label">// La solución</span>
                 <h2 class="section-title">Todo en un solo lugar</h2>
                 <p class="section-subtitle">
-                    Holdear centraliza todas tus inversiones argentinas en una sola plataforma.
+                    HoldeAR centraliza todas tus inversiones argentinas en una sola plataforma.
                 </p>
             </div>
             <div class="solution-content">
@@ -2128,17 +2128,17 @@
             </div>
             <h2>Estamos construyendo algo increíble</h2>
             <p class="modal-description">
-                Holdear está en desarrollo activo. Dejanos tu email y te avisamos apenas esté listo para que seas de los primeros en acceder.
+                HoldeAR está en desarrollo activo. Dejanos tu email y te avisamos apenas esté listo para que seas de los primeros en acceder.
             </p>
             <form class="waitlist-form" id="waitlistForm">
                 <div class="input-group">
-                    <input type="email" placeholder="tu@email.com" required id="emailInput">
+                    <input type="email" name="email" placeholder="tu@email.com" required id="emailInput">
                 </div>
-                <button type="submit" class="btn btn-primary">Unirme a la lista de espera →</button>
+                <button type="submit" class="btn btn-primary" id="btnSubmit">Unirme a la lista de espera →</button>
                 <div class="success-message">
                     <div class="success-icon">✓</div>
                     <h3>¡Estás en la lista!</h3>
-                    <p>Te avisaremos apenas Holdear esté listo para vos.</p>
+                    <p>Te avisaremos apenas HoldeAR esté listo para vos.</p>
                 </div>
             </form>
             <div class="modal-note">
@@ -2150,48 +2150,25 @@
 
     <!-- Footer -->
     <footer>
-        <div class="footer-content">
+        <div class="footer-content" style="grid-template-columns: 2fr 1fr;">
             <div class="footer-brand">
                 <a href="#" class="logo">
                     <div class="logo-icon">H</div>
-                    Holdear
+                    HoldeAR
                 </a>
                 <p>La plataforma para centralizar tu portafolio argentino. Bonos, CEDEARs, acciones y crypto en un solo lugar.</p>
             </div>
             <div class="footer-column">
                 <h4>Producto</h4>
                 <ul>
-                    <li><a href="#">Funciones</a></li>
-                    <li><a href="#">Precios</a></li>
-                    <li><a href="#">Changelog</a></li>
-                    <li><a href="#">Roadmap</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>Recursos</h4>
-                <ul>
-                    <li><a href="#">Blog</a></li>
-                    <li><a href="#">Guías</a></li>
-                    <li><a href="#">API Docs</a></li>
-                    <li><a href="#">Status</a></li>
-                </ul>
-            </div>
-            <div class="footer-column">
-                <h4>Legal</h4>
-                <ul>
-                    <li><a href="#">Privacidad</a></li>
-                    <li><a href="#">Términos</a></li>
-                    <li><a href="#">Seguridad</a></li>
+                    <li><a href="#funciones">Funciones</a></li>
+                    <li><a href="#precios">Precios</a></li>
+                    <li><a href="#faq">FAQ</a></li>
                 </ul>
             </div>
         </div>
         <div class="footer-bottom">
-            <p>© 2026 Holdear. Todos los derechos reservados.</p>
-            <div class="footer-social">
-                <a href="#">𝕏</a>
-                <a href="#">in</a>
-                <a href="#">▶</a>
-            </div>
+            <p>© 2026 HoldeAR. Todos los derechos reservados.</p>
         </div>
     </footer>
 
@@ -2270,8 +2247,8 @@
 
         // Attach to all CTA buttons
         document.querySelectorAll('.btn-primary, .pricing-card .btn-secondary').forEach(btn => {
-            // Skip modal close button
-            if (btn.id === 'modalClose') return;
+            // Skip modal close button and submit button
+            if (btn.id === 'modalClose' || btn.id === 'btnSubmit') return;
             btn.addEventListener('click', openModal);
         });
 
@@ -2286,27 +2263,45 @@
             }
         });
 
-        // Form submission
+        // Form submission - Google Apps Script integration
+        const scriptURL = 'https://script.google.com/macros/s/AKfycbwQbod1Q727CuzHmmRbHIGy5FotVS-yoZuKrZET4pZKeHWWqwNQdXiOV-aRJn5I4z2-/exec';
+        const btnSubmit = document.getElementById('btnSubmit');
+        
         waitlistForm.addEventListener('submit', (e) => {
             e.preventDefault();
+            
+            // Show loading state
+            btnSubmit.innerText = 'Enviando...';
+            btnSubmit.disabled = true;
+            
+            // Send to Google Apps Script using URL parameters (more compatible)
             const email = emailInput.value;
-            
-            // Here you would typically send to your backend/API
-            // For now, we'll just show success state
-            console.log('Email submitted:', email);
-            
-            // Show success state
-            waitlistForm.classList.add('success');
-            
-            // Close modal after 3 seconds
-            setTimeout(() => {
-                closeModal();
-                // Reset form after modal closes
+            fetch(scriptURL + '?email=' + encodeURIComponent(email), {
+                method: 'GET',
+                mode: 'no-cors'
+            })
+            .then(response => {
+                // Show success state
+                waitlistForm.classList.add('success');
+                
+                // Close modal after 3 seconds
                 setTimeout(() => {
-                    waitlistForm.classList.remove('success');
-                    emailInput.value = '';
-                }, 300);
-            }, 3000);
+                    closeModal();
+                    // Reset form after modal closes
+                    setTimeout(() => {
+                        waitlistForm.classList.remove('success');
+                        emailInput.value = '';
+                        btnSubmit.innerText = 'Unirme a la lista de espera →';
+                        btnSubmit.disabled = false;
+                    }, 300);
+                }, 3000);
+            })
+            .catch(error => {
+                console.error('Error:', error.message);
+                alert('Hubo un error, intenta de nuevo.');
+                btnSubmit.innerText = 'Unirme a la lista de espera →';
+                btnSubmit.disabled = false;
+            });
         });
     </script>
 </body>
